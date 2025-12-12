@@ -1,0 +1,79 @@
+version: '3.8'
+
+services:
+  # PostgreSQL con datos iniciales
+  postgres:
+    build: ./backend
+    environment:
+      POSTGRES_PASSWORD: insecure_password_123
+      POSTGRES_DB: bbva_digital
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - storage_data:/var/lib/postgresql/storage
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # PostgREST para API REST
+  postgrest:
+    image: postgrest/postgrest:v10.1.2
+    environment:
+      PGRST_DB_URI: postgres://postgres:insecure_password_123@postgres:5432/bbva_digital
+      PGRST_DB_SCHEMA: public
+      PGRST_DB_ANON_ROLE: web_anon
+      PGRST_JWT_SECRET: weak_jwt_secret_change_me
+      PGRST_JWT_SECRET_IS_BASE64: false
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "8000:3000"
+
+  # Storage estático
+  storage:
+    image: nginx:alpine
+    volumes:
+      - storage_data:/usr/share/nginx/html
+    ports:
+      - "8001:80"
+    command: >
+      sh -c "
+      mkdir -p /usr/share/nginx/html/public/admin-secrets &&
+      echo 'fin has llegado flag[congratulations_bbva_digital_hacked]' > /usr/share/nginx/html/public/admin-secrets/secrets.txt &&
+      nginx -g 'daemon off;'
+      "
+
+  # Frontend React
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - REACT_APP_API_URL=http://localhost:8000
+      - REACT_APP_STORAGE_URL=http://localhost:8001
+      - REACT_APP_JWT_SECRET=weak_jwt_secret_change_me
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - postgrest
+
+  # Nginx como proxy principal
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - frontend
+      - postgrest
+      - storage
+
+volumes:
+  postgres_data:
+  storage_data:

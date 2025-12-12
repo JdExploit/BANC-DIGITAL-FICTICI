@@ -1,0 +1,139 @@
+.dashboard-container {
+    padding: 20px;
+}
+
+.welcome-banner {
+    background: linear-gradient(135deg, #004481 0%, #0066cc 100%);
+    color: white;
+    padding: 30px;
+    border-radius: 15px;
+    margin-bottom: 30px;
+}
+
+.welcome-banner h1 {
+    margin-bottom: 10px;
+    font-size: 2rem;
+}
+
+.welcome-banner p {
+    opacity: 0.9;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+}
+
+@media (min-width: 768px) {
+    .dashboard-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.balance-card {
+    background: white;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.balance-card h3 {
+    color: #666;
+    margin-bottom: 10px;
+    font-size: 1rem;
+}
+
+.balance-card h1 {
+    color: #004481;
+    font-size: 2.5rem;
+    margin-bottom: 5px;
+}
+
+.balance-card p {
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.balance-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.accounts-card, .transactions-card {
+    background: white;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.accounts-card h3, .transactions-card h3 {
+    color: #004481;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 10px;
+}
+
+.account-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.account-item:last-child {
+    border-bottom: none;
+}
+
+.account-balance {
+    font-weight: bold;
+    color: #004481;
+    font-size: 1.2rem;
+}
+
+.transaction-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.transaction-item:last-child {
+    border-bottom: none;
+}
+
+.transaction-amount {
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.transaction-amount.positive {
+    color: #28a745;
+}
+
+.transaction-amount.negative {
+    color: #dc3545;
+}
+
+.exploit-panel {
+    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+    color: white;
+    padding: 25px;
+    border-radius: 15px;
+    grid-column: 1 / -1;
+}
+
+.exploit-panel h3 {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.exploit-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
